@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
+time.h
+-
+stdlib.h
+-
+
 /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 stdio.h
 -
+Queue.h
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
 

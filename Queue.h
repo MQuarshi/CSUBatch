@@ -19,12 +19,10 @@ typedef struct Job {
 } job_t;
 
 typedef struct Queue_Node {
-    int count;
+    unsigned int count;
     job_t *job;
     struct Queue_Node *next;
-
     struct Queue_Node (*remove_head)(struct Queue_Node *self);
-
     void (*add)(struct Queue_Node *, job_t *job);
 } queue_t;
 
@@ -35,11 +33,23 @@ queue_t *remove_head(queue_t *self) {
     return head;
 }
 
-void add(queue_t *head, job_t *job) {
+void (add)(queue_t *head, job_t *job) {
     queue_t *curr = head;
-    while (curr->next != NULL) curr = curr->next;
+    while (curr->next != NULL) {
+        curr = curr->next;
+    }
     curr->next = malloc(sizeof(queue_t));
     curr->next->job = job;
     curr->next->next = NULL;
     head->count++;
 }
+
+queue_t* init_queue(queue_t* head) {
+    head = malloc(sizeof(queue_t));
+    head->count = 0;
+    head->add = add;
+    head->next = NULL;
+    return head;
+}
+//void(*add)(queue_t*, job_t*);
+
