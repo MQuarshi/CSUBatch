@@ -74,6 +74,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h">
+			<Option target="CSUBatch"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c">
 			<Option target="CSUBatch"/>
 		</Unit>

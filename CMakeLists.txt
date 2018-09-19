@@ -3,4 +3,4 @@ project(CSUBatch C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(CSUBatch main.c)
+add_executable(CSUBatch main.c Queue.h)
