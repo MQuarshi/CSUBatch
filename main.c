@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-pthread_mutex_t queuemutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
 pthread_t tid;
@@ -56,7 +56,7 @@ int main() {
     return 0;
 }
 
-void createModules(void *module1, void *module2) {
+void create_modules(void *module1, void *module2) {
 
     pthread_create(&tid, NULL, module1, (void *) &tid);
     pthread_create(&tid, NULL, module2, (void *) &tid);
