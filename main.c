@@ -10,7 +10,7 @@ pthread_t tid;
 
 int main() {
 
-    int option = 0;
+    char option = 0;
     while (option != '4') {
 
         printf("\n\tMENU DEMONSTRATION");
@@ -20,7 +20,7 @@ int main() {
         printf("\n\t 3. RUN PROGRAM");
         printf("\n\t 4. EXIT");
         printf("\n\n Enter Your Choice: ");
-        option = getche();
+        option = scanf("%c", &option);
         switch (option) {
             case '1':
                 printf("\n\nYOU SELECTED OPTION 1:TEST PROGRAM\n");
