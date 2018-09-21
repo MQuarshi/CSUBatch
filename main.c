@@ -1,17 +1,48 @@
 #include <stdio.h>
 #include "Queue.h"
 #include <pthread.h>
+#include <stdlib.h>
 
-pthread_mutex_t queueMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t queuemutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
 pthread_t tid;
 
 int main() {
 
+    int option = 0;
+    while (option != '4') {
+
+        printf("\n\tMENU DEMONSTRATION");
+        printf("\n\t------------------------------");
+        printf("\n\n\t 1. TEST PROGRAM");
+        printf("\n\t 2. HELP");
+        printf("\n\t 3. RUN PROGRAM");
+        printf("\n\t 4. EXIT");
+        printf("\n\n Enter Your Choice: ");
+        option = getche();
+        switch (option) {
+            case '1':
+                printf("\n\nYOU SELECTED OPTION 1:TEST PROGRAM\n");
+                break;
+            case '2':
+                printf("\n\nYOU SELECTED OPTION 2: HELP COMMAND\n");
+                break;
+            case '3':
+                printf("\n\nYOU SELECTED OPTION 3:RUN PROGRAM\n");
+                break;
+            case '4':
+                printf("\n\nYOU SELECTED OPTION 4:EXIT\n");
+                break;
+            default:
+                printf("\n\nINVALID SELECTION...Please try again\n");
+        }
+    }
+
+
     queue_t *head = init_queue(head);
     job_t *job = malloc(sizeof(job_t));;
-     head->add(head, job);
+    head->add(head, job);
     job_t *job1 = malloc(sizeof(job_t));;
     head->add(head, job1);
     job_t *job2 = malloc(sizeof(job_t));;
@@ -32,26 +63,3 @@ void createModules(void *module1, void *module2) {
 
 }
 
-//void *schedulerMod () {
-
-//int resVal;
-
-//Implementation not done yet
-
-//resVal = pthread_cond_signal(&condB);
-
-//resVal = pthread_mutex_lock(&queueMutex);
-
-//while (pthread_cond_wait(&condA, &queueMutex) != 0)
-
-// }
-
-//void *dispatcherMod () {
-
-//Implementation not done yet
-
-//while (pthread_cond_wait(&condB, &queueMutex) != 0)
-
-// rValue = pthread_mutex_unlock(&mutex);
-
-//}
