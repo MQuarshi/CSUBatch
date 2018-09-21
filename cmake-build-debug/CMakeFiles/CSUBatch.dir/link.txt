@@ -1,3 +1,1 @@
-"C:\Program Files\JetBrains\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\CSUBatch.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\CSUBatch.dir/objects.a @CMakeFiles\CSUBatch.dir\objects1.rsp
-C:\MinGW\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\CSUBatch.dir/objects.a -Wl,--no-whole-archive  -o CSUBatch.exe -Wl,--out-implib,libCSUBatch.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\CSUBatch.dir\linklibs.rsp
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/CSUBatch.dir/main.c.o CMakeFiles/CSUBatch.dir/menu.c.o  -o CSUBatch.exe -Wl,--out-implib,libCSUBatch.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

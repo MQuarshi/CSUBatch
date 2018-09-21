@@ -1,9 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/CSUBatch.dir/main.c.obj"
-  "CMakeFiles/CSUBatch.dir/menu.c.obj"
+  "CMakeFiles/CSUBatch.dir/main.c.o"
+  "CMakeFiles/CSUBatch.dir/menu.c.o"
   "CSUBatch.pdb"
   "CSUBatch.exe"
-  "CSUBatch.exe.manifest"
   "libCSUBatch.dll.a"
 )
 

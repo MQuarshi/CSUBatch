@@ -20,7 +20,7 @@ int main() {
         printf("\n\t 3. RUN PROGRAM");
         printf("\n\t 4. EXIT");
         printf("\n\n Enter Your Choice: ");
-        option = scanf("%c", &option);
+        scanf(" %c", &option);
         switch (option) {
             case '1':
                 printf("\n\nYOU SELECTED OPTION 1:TEST PROGRAM\n");

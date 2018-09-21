@@ -6,10 +6,18 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/csu/CSUBatch/menu.c
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
+time.h
+-
+stdlib.h
+-
+
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 stdio.h
 -
-conio.h
+Queue.h
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
+pthread.h
 -
 stdlib.h
 -
