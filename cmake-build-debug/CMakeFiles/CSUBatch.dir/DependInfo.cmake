@@ -4,12 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c" "/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles/CSUBatch.dir/main.c.o"
+  "C:/Users/csu/CSUBatch/main.c" "C:/Users/csu/CSUBatch/cmake-build-debug/CMakeFiles/CSUBatch.dir/main.c.obj"
+  "C:/Users/csu/CSUBatch/menu.c" "C:/Users/csu/CSUBatch/cmake-build-debug/CMakeFiles/CSUBatch.dir/menu.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
+  "../."
   )
 
 # Targets to which this target links.

@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 project(CSUBatch C)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 
-add_executable(CSUBatch main.c Queue.h)
+include_directories(.)
+
+add_executable(CSUBatch
+        main.c
+        Queue.h menu.c)

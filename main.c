@@ -5,7 +5,7 @@ int main() {
 
     queue_t *head = init_queue(head);
     job_t *job = malloc(sizeof(job_t));;
-    head->add(head, job);
+     head->add(head, job);
     job_t *job1 = malloc(sizeof(job_t));;
     head->add(head, job1);
     job_t *job2 = malloc(sizeof(job_t));;
