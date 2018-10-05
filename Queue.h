@@ -3,6 +3,7 @@
 //
 #include <time.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #ifndef CSUBATCH_QUEUE_H
 #define CSUBATCH_QUEUE_H
@@ -12,8 +13,9 @@
 
 typedef struct Job {
     char *name;
+    char* const namargs;
     int priority;
-    time_t sub_time;
+    int64_t sub_time;
     timer_t run_time;
 
 } job_t;
@@ -25,6 +27,8 @@ typedef struct Queue_Node {
     struct Queue_Node (*remove_head)(struct Queue_Node *self);
     void (*add)(struct Queue_Node *, job_t *job);
 } queue_t;
+
+int64_t currentTimeMillis();
 
 queue_t *remove_head(queue_t *self) {
     queue_t *head = self;
@@ -38,6 +42,11 @@ void (add)(queue_t *head, job_t *job) {
     while (curr->next != NULL) {
         curr = curr->next;
     }
+
+    struct timeval start, stop;
+    double secs = 0;
+
+    job->sub_time = currentTimeMillis();
     curr->next = malloc(sizeof(queue_t));
     curr->next->job = job;
     curr->next->next = NULL;
@@ -51,5 +60,90 @@ queue_t* init_queue(queue_t* head) {
     head->next = NULL;
     return head;
 }
-//void(*add)(queue_t*, job_t*);
 
+queue_t* sort(queue_t* jobs, int type) {
+    if(jobs == NULL || jobs->next == NULL) return jobs;
+
+    queue_t* q = jobs;
+    queue_t* p = jobs->next->next;
+    while(p && p->next) {
+        q = q->next;
+        p = p->next;
+    }
+
+    queue_t* mid = q->next;
+    q->next = NULL;
+    queue_t* fast = sort(jobs, type);
+    queue_t* slow = sort(mid, type);
+    queue_t ret[1], * tail = ret;
+    switch(type) {
+        /// sort by priority
+        case 1:
+            while(fast && slow) {
+                if(fast->job->priority > slow->job->priority) {
+                    tail->next = fast;
+                    tail = fast;
+                    fast = fast->next;
+                } else {
+                    tail->next = slow;
+                    tail = slow;
+                    slow = slow->next;
+                }
+            }
+            break;
+        /// sort by submission time
+        case 2:
+            while(fast && slow) {
+                if(fast->job->sub_time < slow->job->sub_time) {
+                    tail->next = fast;
+                    tail = fast;
+                    fast = fast->next;
+                } else {
+                    tail->next = slow;
+                    tail = slow;
+                    slow = slow->next;
+                }
+            }
+            break;
+        /// sort by job time
+        case 3:
+            while(fast && slow) {
+                if(fast->job->run_time < slow->job->run_time) {
+                    tail->next = fast;
+                    tail = fast;
+                    fast = fast->next;
+                } else {
+                    tail->next = slow;
+                    tail = slow;
+                    slow = slow->next;
+                }
+            }
+            break;
+        default:
+            return jobs;
+    }
+
+
+    while(fast) {
+        tail->next = fast;
+        tail = fast;
+        fast = fast->next;
+    }
+
+    while(slow) {
+        tail->next = slow;
+        tail = slow;
+        slow = slow->next;
+    }
+    tail->next = NULL;
+    return ret->next;
+}
+
+
+int64_t currentTimeMillis() {
+    struct timeval time;
+    gettimeofday(&time, NULL);
+    int64_t s1 = (int64_t)(time.tv_sec) * 1000;
+    int64_t s2 = (time.tv_usec / 1000);
+    return s1 + s2;
+}

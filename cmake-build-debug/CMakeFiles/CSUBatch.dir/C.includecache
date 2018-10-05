@@ -11,6 +11,8 @@ time.h
 -
 stdlib.h
 -
+sys/time.h
+-
 
 /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 stdio.h
@@ -20,5 +22,9 @@ Queue.h
 pthread.h
 -
 stdlib.h
+-
+unistd.h
+-
+wait.h
 -
 
