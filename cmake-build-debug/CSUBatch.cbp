@@ -8,84 +8,88 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug"/>
+				<Option working_dir="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug"/>
+				<Option working_dir="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="CSUBatch">
-				<Option output="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CSUBatch.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/."/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/../include/w32api"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 CSUBatch"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="CSUBatch/fast">
-				<Option output="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CSUBatch.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/."/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/include"/>
-					<Add directory="/usr/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-pc-cygwin/7.3.0/../../../../lib/../include/w32api"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 CSUBatch/fast"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug"/>
+				<Option working_dir="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make.exe -j4 -f &quot;/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CSUBatch">
+				<Option output="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/CSUBatch" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/kendrickgholston/CLionProjects/CSUBatch/./lib"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 CSUBatch"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CSUBatch/fast">
+				<Option output="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/CSUBatch" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/kendrickgholston/CLionProjects/CSUBatch/./lib"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 CSUBatch/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/kendrickgholston/CLionProjects/CSUBatch/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h">
+		<Unit filename="/Users/kendrickgholston/CLionProjects/CSUBatch/Queue.h">
 			<Option target="CSUBatch"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c">
+		<Unit filename="/Users/kendrickgholston/CLionProjects/CSUBatch/main.c">
 			<Option target="CSUBatch"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/menu.c">
+		<Unit filename="/Users/kendrickgholston/CLionProjects/CSUBatch/menu.c">
 			<Option target="CSUBatch"/>
 		</Unit>
-		<Unit filename="/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/CMakeLists.txt">
+		<Unit filename="/Users/kendrickgholston/CLionProjects/CSUBatch/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

@@ -1,8 +1,14 @@
 //
 // Created by jazart on 9/19/2018.
 //
-#include <time.h>
+
+#include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <ntsid.h>
+#include <time.h>
+#include <sys/time.h>
+
 
 #ifndef CSUBATCH_QUEUE_H
 #define CSUBATCH_QUEUE_H
@@ -14,7 +20,7 @@ typedef struct Job {
     char *name;
     int priority;
     time_t sub_time;
-    timer_t run_time;
+    //timer_t run_time;
 
 } job_t;
 
@@ -49,7 +55,7 @@ queue_t* init_queue(queue_t* head) {
     head->count = 0;
     head->add = add;
     head->next = NULL;
+
     return head;
 }
 //void(*add)(queue_t*, job_t*);
-

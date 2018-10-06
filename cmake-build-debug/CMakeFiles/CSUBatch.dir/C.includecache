@@ -6,19 +6,37 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
-time.h
+/Users/kendrickgholston/CLionProjects/CSUBatch/Queue.h
+stddef.h
+-
+stdio.h
 -
 stdlib.h
 -
+ntsid.h
+-
+time.h
+-
+sys/time.h
+-
 
-/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
+/Users/kendrickgholston/CLionProjects/CSUBatch/main.c
 stdio.h
 -
 Queue.h
-/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
+/Users/kendrickgholston/CLionProjects/CSUBatch/Queue.h
 pthread.h
 -
 stdlib.h
+-
+sys/types.h
+-
+stdlib.h
+-
+stdio.h
+-
+assert.h
+-
+string.h
 -
 

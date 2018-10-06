@@ -3,7 +3,8 @@ project(CSUBatch C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(.)
+include_directories(SYSTEM ./lib)
+
 
 add_executable(CSUBatch
         main.c

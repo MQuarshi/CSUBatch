@@ -2,8 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/CSUBatch.dir/main.c.o"
   "CMakeFiles/CSUBatch.dir/menu.c.o"
   "CSUBatch.pdb"
-  "CSUBatch.exe"
-  "libCSUBatch.dll.a"
+  "CSUBatch"
 )
 
 # Per-language clean rules from dependency scanning.

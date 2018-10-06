@@ -1,1 +1,1 @@
-/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/CSUBatch.dir/main.c.o CMakeFiles/CSUBatch.dir/menu.c.o  -o CSUBatch.exe -Wl,--out-implib,libCSUBatch.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+/Library/Developer/CommandLineTools/usr/bin/cc -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/CSUBatch.dir/main.c.o CMakeFiles/CSUBatch.dir/menu.c.o  -o CSUBatch 
