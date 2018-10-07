@@ -6,5 +6,5 @@ C_FLAGS = -g   -std=gnu11
 
 C_DEFINES = 
 
-C_INCLUDES = -I/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/. 
+C_INCLUDES = -isystem /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/./lib 
 

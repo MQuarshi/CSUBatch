@@ -27,4 +27,14 @@ unistd.h
 -
 wait.h
 -
+sys/types.h
+-
+stdlib.h
+-
+stdio.h
+-
+assert.h
+-
+string.h
+-
 
