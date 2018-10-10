@@ -13,6 +13,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <wait.h>
+#include <inttypes.h>
+#include "Queue.h"
 
 /* Error Code */
 #define EINVAL       1
@@ -21,6 +24,7 @@
 #define MAXMENUARGS  4
 #define MAXCMDLINE   64
 
+struct Queue_Node* job_queue;
 void menu_execute(char *line, int isargs);
 int cmd_run(int nargs, char **args);
 
@@ -29,36 +33,40 @@ int cmd_quit(int nargs, char **args);
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
-
-int jobN = 0;
 char sched[8] = "fcfs";
 
-struct Jobs {
-    char JobNm[10];
-    int burstT;
-    int priority;
-    int order;
-} Job[5], temp;
 /*
  * The run command - submit a job.
  */
 int cmd_run(int nargs, char **args) {
+    job_t* job = malloc(sizeof(job_t));
     if (nargs != 4) {
         printf("Usage: run <job> <time> <priority>\n");
         return EINVAL;
     }
-    if (jobN >= sizeof Job / sizeof Job[0])
-        return 0;
 
-    strcpy(Job[jobN].JobNm, args[1]);
-    Job[jobN].order = jobN + 1;
+//    strcpy(job_queue->job->name, args[1]);
     int burst = atoi(args[2]);
-    int pri = atoi(args[3]);
-    Job[jobN].burstT = burst;
-    Job[jobN].priority = pri;
-    jobN++;
+    int priority = atoi(args[3]);
+    job->run_time = burst;
+    job->priority = priority;
+    job_queue->add(job_queue, job);
+
     /* Use execv to run the submitted job in csubatch */
-    printf("use execv to run the job in csubatch.\n");
+    pid_t child = fork();
+    char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
+    if(child == 0) {
+        if(execv("C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe",
+                execv_args) < 0) {
+            printf("\nError\n");
+            exit(0);
+        }
+    }
+
+    if(child != 0) {
+        waitpid(-1, NULL, 0);
+    }
+    printf("\nuse execv to run the job in csubatch.\n");
     return 1; /* if succeed */
 }
 
@@ -142,9 +150,11 @@ int cmd_list(int nargs, char **args) {
     printf("The Current Scheduling policy is:%s\n", sched);
     printf("The following are the list of jobs:\n");
     printf("Order\tJob Name\tBurst Time\tPriority\n");
-
-    for (i = 0; i < jobN; i++) {
-        printf("%d\t%s\t\t%d\t\t%d\n", Job[i].order, Job[i].JobNm, Job[i].burstT, Job[i].priority);
+    queue_t* jobs = job_queue->next;
+    int count = job_queue->count;
+    for (i = 0; i < count; i++) {
+        printf("%" PRId64 "\t%s\t\t%ld\t\t%d\n", jobs->job->sub_time, jobs->job->name, jobs->job->run_time, jobs->job->priority);
+        jobs = jobs->next;
     }
     return (0);
 }
@@ -195,6 +205,8 @@ int cmd_dispatch(char *cmd) {
 int main() {
     char *buffer;
     size_t bufsize = 64;
+    job_queue = init_queue(job_queue);
+
 
     buffer = (char *) malloc(bufsize * sizeof(char));
     if (buffer == NULL) {

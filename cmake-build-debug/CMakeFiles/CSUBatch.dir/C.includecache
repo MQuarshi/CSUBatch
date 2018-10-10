@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/csu/CLionProjects/CSUBatch/main.c
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
+time.h
+-
+stdlib.h
+-
+sys/time.h
+-
+
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 assert.h
 -
 unistd.h
@@ -21,4 +29,10 @@ assert.h
 -
 string.h
 -
+wait.h
+-
+inttypes.h
+-
+Queue.h
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
 

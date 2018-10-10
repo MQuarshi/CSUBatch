@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
+CMAKE_COMMAND = /cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
 
 # The command to remove a file.
-RM = /cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
+RM = /cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/csu/CLionProjects/CSUBatch
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/jazart/CLionProjects/CSUBatch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/CSUBatch.dir/depend.make
@@ -59,58 +59,43 @@ include CMakeFiles/CSUBatch.dir/flags.make
 
 CMakeFiles/CSUBatch.dir/main.c.o: CMakeFiles/CSUBatch.dir/flags.make
 CMakeFiles/CSUBatch.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/CSUBatch.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CSUBatch.dir/main.c.o   -c /cygdrive/c/Users/csu/CLionProjects/CSUBatch/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/CSUBatch.dir/main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CSUBatch.dir/main.c.o   -c /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 
 CMakeFiles/CSUBatch.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CSUBatch.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/csu/CLionProjects/CSUBatch/main.c > CMakeFiles/CSUBatch.dir/main.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c > CMakeFiles/CSUBatch.dir/main.c.i
 
 CMakeFiles/CSUBatch.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CSUBatch.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/csu/CLionProjects/CSUBatch/main.c -o CMakeFiles/CSUBatch.dir/main.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c -o CMakeFiles/CSUBatch.dir/main.c.s
 
 CMakeFiles/CSUBatch.dir/menu.c.o: CMakeFiles/CSUBatch.dir/flags.make
 CMakeFiles/CSUBatch.dir/menu.c.o: ../menu.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/CSUBatch.dir/menu.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CSUBatch.dir/menu.c.o   -c /cygdrive/c/Users/csu/CLionProjects/CSUBatch/menu.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/CSUBatch.dir/menu.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CSUBatch.dir/menu.c.o   -c /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/menu.c
 
 CMakeFiles/CSUBatch.dir/menu.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CSUBatch.dir/menu.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/csu/CLionProjects/CSUBatch/menu.c > CMakeFiles/CSUBatch.dir/menu.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/menu.c > CMakeFiles/CSUBatch.dir/menu.c.i
 
 CMakeFiles/CSUBatch.dir/menu.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CSUBatch.dir/menu.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/csu/CLionProjects/CSUBatch/menu.c -o CMakeFiles/CSUBatch.dir/menu.c.s
-
-CMakeFiles/CSUBatch.dir/Display.c.o: CMakeFiles/CSUBatch.dir/flags.make
-CMakeFiles/CSUBatch.dir/Display.c.o: ../Display.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/CSUBatch.dir/Display.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CSUBatch.dir/Display.c.o   -c /cygdrive/c/Users/csu/CLionProjects/CSUBatch/Display.c
-
-CMakeFiles/CSUBatch.dir/Display.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CSUBatch.dir/Display.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cygdrive/c/Users/csu/CLionProjects/CSUBatch/Display.c > CMakeFiles/CSUBatch.dir/Display.c.i
-
-CMakeFiles/CSUBatch.dir/Display.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CSUBatch.dir/Display.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/csu/CLionProjects/CSUBatch/Display.c -o CMakeFiles/CSUBatch.dir/Display.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/menu.c -o CMakeFiles/CSUBatch.dir/menu.c.s
 
 # Object files for target CSUBatch
 CSUBatch_OBJECTS = \
 "CMakeFiles/CSUBatch.dir/main.c.o" \
-"CMakeFiles/CSUBatch.dir/menu.c.o" \
-"CMakeFiles/CSUBatch.dir/Display.c.o"
+"CMakeFiles/CSUBatch.dir/menu.c.o"
 
 # External object files for target CSUBatch
 CSUBatch_EXTERNAL_OBJECTS =
 
 CSUBatch.exe: CMakeFiles/CSUBatch.dir/main.c.o
 CSUBatch.exe: CMakeFiles/CSUBatch.dir/menu.c.o
-CSUBatch.exe: CMakeFiles/CSUBatch.dir/Display.c.o
 CSUBatch.exe: CMakeFiles/CSUBatch.dir/build.make
 CSUBatch.exe: CMakeFiles/CSUBatch.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable CSUBatch.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable CSUBatch.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CSUBatch.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -123,6 +108,6 @@ CMakeFiles/CSUBatch.dir/clean:
 .PHONY : CMakeFiles/CSUBatch.dir/clean
 
 CMakeFiles/CSUBatch.dir/depend:
-	cd /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/csu/CLionProjects/CSUBatch /cygdrive/c/Users/csu/CLionProjects/CSUBatch /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles/CSUBatch.dir/DependInfo.cmake --color=$(COLOR)
+	cd /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/jazart/CLionProjects/CSUBatch /cygdrive/c/Users/jazart/CLionProjects/CSUBatch /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles/CSUBatch.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/CSUBatch.dir/depend
 
