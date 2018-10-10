@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
+CMAKE_COMMAND = /cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe
 
 # The command to remove a file.
-RM = /cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
+RM = /cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/jazart/CLionProjects/CSUBatch
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/csu/CLionProjects/CSUBatch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-d
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/cygdrive/c/Users/jazart/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E echo No\ interactive\ CMake\ dialog\ available.
+	/cygdrive/c/Users/csu/.CLion2018.2/system/cygwin_cmake/bin/cmake.exe -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -122,6 +122,33 @@ CSUBatch: cmake_check_build_system
 CSUBatch/fast:
 	$(MAKE) -f CMakeFiles/CSUBatch.dir/build.make CMakeFiles/CSUBatch.dir/build
 .PHONY : CSUBatch/fast
+
+Display.o: Display.c.o
+
+.PHONY : Display.o
+
+# target to build an object file
+Display.c.o:
+	$(MAKE) -f CMakeFiles/CSUBatch.dir/build.make CMakeFiles/CSUBatch.dir/Display.c.o
+.PHONY : Display.c.o
+
+Display.i: Display.c.i
+
+.PHONY : Display.i
+
+# target to preprocess a source file
+Display.c.i:
+	$(MAKE) -f CMakeFiles/CSUBatch.dir/build.make CMakeFiles/CSUBatch.dir/Display.c.i
+.PHONY : Display.c.i
+
+Display.s: Display.c.s
+
+.PHONY : Display.s
+
+# target to generate assembly for a file
+Display.c.s:
+	$(MAKE) -f CMakeFiles/CSUBatch.dir/build.make CMakeFiles/CSUBatch.dir/Display.c.s
+.PHONY : Display.c.s
 
 main.o: main.c.o
 
@@ -186,6 +213,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CSUBatch"
 	@echo "... edit_cache"
+	@echo "... Display.o"
+	@echo "... Display.i"
+	@echo "... Display.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

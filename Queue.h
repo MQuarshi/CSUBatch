@@ -78,6 +78,7 @@ queue_t* sort(queue_t* jobs, int type) {
     queue_t ret[1], * tail = ret;
     switch(type) {
         /// sort by priority
+
         case 1:
             while(fast && slow) {
                 if(fast->job->priority > slow->job->priority) {
@@ -91,7 +92,7 @@ queue_t* sort(queue_t* jobs, int type) {
                 }
             }
             break;
-        /// sort by submission time
+            /// sort by submission time-fcfs
         case 2:
             while(fast && slow) {
                 if(fast->job->sub_time < slow->job->sub_time) {
@@ -105,7 +106,7 @@ queue_t* sort(queue_t* jobs, int type) {
                 }
             }
             break;
-        /// sort by job time
+            /// sort by job time-sjf
         case 3:
             while(fast && slow) {
                 if(fast->job->run_time < slow->job->run_time) {

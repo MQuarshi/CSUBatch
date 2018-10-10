@@ -1,18 +1,13 @@
-#include <stdio.h>
-#include "Queue.h"
-#include <pthread.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <wait.h>
-/**
- * Sorts based on type, 1 = priority, 2 = sjf, 3 = fcfs
+/*
+ *
+ * Compilation Instruction:
+ * gcc commandline_parser.c -o commandline_parser
+ * ./commandline_parser
+ *
  */
-pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
-pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
-pthread_t tid;
 
-
+#include <assert.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,17 +22,23 @@ pthread_t tid;
 #define MAXCMDLINE   64
 
 void menu_execute(char *line, int isargs);
-
 int cmd_run(int nargs, char **args);
 
+int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
-
 void showmenu(const char *name, const char *x[]);
-
 int cmd_helpmenu(int n, char **a);
-
 int cmd_dispatch(char *cmd);
 
+int jobN = 0;
+char sched[8] = "fcfs";
+
+struct Jobs {
+    char JobNm[10];
+    int burstT;
+    int priority;
+    int order;
+} Job[5], temp;
 /*
  * The run command - submit a job.
  */
@@ -46,19 +47,19 @@ int cmd_run(int nargs, char **args) {
         printf("Usage: run <job> <time> <priority>\n");
         return EINVAL;
     }
+    if (jobN >= sizeof Job / sizeof Job[0])
+        return 0;
 
-    int i = nargs;
-    printf("%d", i);
-
-    char *jobName;
-    int priority;
-//    time_t
-//    t
-    while (i-- > 1)
-        printf("%s\n", args[i]);
+    strcpy(Job[jobN].JobNm, args[1]);
+    Job[jobN].order = jobN + 1;
+    int burst = atoi(args[2]);
+    int pri = atoi(args[3]);
+    Job[jobN].burstT = burst;
+    Job[jobN].priority = pri;
+    jobN++;
     /* Use execv to run the submitted job in csubatch */
     printf("use execv to run the job in csubatch.\n");
-    return 0; /* if succeed */
+    return 1; /* if succeed */
 }
 
 /*
@@ -94,11 +95,13 @@ void showmenu(const char *name, const char *x[]) {
     printf("\n");
 }
 
+
 static const char *helpmenu[] = {
         "[run] <job> <time> <priority>       ",
         "[quit] Exit csubatch                 ",
         "[help] Print help menu              ",
         /* Please add more menu options below */
+        "[list] List all jobs               ",
         NULL
 };
 
@@ -115,7 +118,6 @@ int cmd_helpmenu(int n, char **a) {
  */
 static struct {
     const char *name;
-
     int (*func)(int nargs, char **args);
 } cmdtable[] = {
         /* commands: single command must end with \n */
@@ -126,10 +128,26 @@ static struct {
         {"run",    cmd_run},
         {"q\n",    cmd_quit},
         {"quit\n", cmd_quit},
+        {"list\n", cmd_list},
+
         /* Please add more operations below. */
         {NULL, NULL}
 };
 
+/*
+ * List out the jobs
+ */
+int cmd_list(int nargs, char **args) {
+    int i;
+    printf("The Current Scheduling policy is:%s\n", sched);
+    printf("The following are the list of jobs:\n");
+    printf("Order\tJob Name\tBurst Time\tPriority\n");
+
+    for (i = 0; i < jobN; i++) {
+        printf("%d\t%s\t\t%d\t\t%d\n", Job[i].order, Job[i].JobNm, Job[i].burstT, Job[i].priority);
+    }
+    return (0);
+}
 /*
  * Process a single command.
  */
@@ -171,28 +189,10 @@ int cmd_dispatch(char *cmd) {
     return EINVAL;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 /*
  * Command line main loop.
  */
 int main() {
-    queue_t *head = init_queue(head);
-    job_t *job = malloc(sizeof(job_t));;
-    head->job = job;
-
-    for(int i = 0; i < 5; ++i) {
-        job_t *j = malloc(sizeof(job_t));;
-        j->priority = i + 1;
-        j->run_time = i * i;
-        head->add(head, j);
-    }
-    head = sort(head, 1);
-    for(int i = 0; i < 5; ++i) {
-        printf("\nPriority: %d, Sub Time: %ld, Run Time: %ld\n", head->job->priority, head->job->sub_time,
-                head->job->run_time);
-        head = head->next;
-    }
     char *buffer;
     size_t bufsize = 64;
 
@@ -206,13 +206,6 @@ int main() {
         printf("> [? for menu]: ");
         getline(&buffer, &bufsize, stdin);
         cmd_dispatch(buffer);
-
     }
+    return 0;
 }
-#pragma clang diagnostic pop
-
-void create_modules(void *module1, void *module2) {
-    pthread_create(&tid, NULL, module1, (void *) &tid);
-    pthread_create(&tid, NULL, module2, (void *) &tid);
-}
-

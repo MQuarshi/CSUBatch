@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/CSUBatch.dir/main.c.o"
   "CMakeFiles/CSUBatch.dir/menu.c.o"
+  "CMakeFiles/CSUBatch.dir/Display.c.o"
   "CSUBatch.pdb"
   "CSUBatch.exe"
   "libCSUBatch.dll.a"

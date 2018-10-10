@@ -1,1 +1,1 @@
-/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/CSUBatch.dir/main.c.o CMakeFiles/CSUBatch.dir/menu.c.o  -o CSUBatch.exe -Wl,--out-implib,libCSUBatch.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/CSUBatch.dir/main.c.o CMakeFiles/CSUBatch.dir/menu.c.o CMakeFiles/CSUBatch.dir/Display.c.o  -o CSUBatch.exe -Wl,--out-implib,libCSUBatch.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

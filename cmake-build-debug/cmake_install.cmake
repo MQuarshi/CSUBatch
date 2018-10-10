@@ -1,4 +1,4 @@
-# Install script for directory: /cygdrive/c/Users/jazart/CLionProjects/CSUBatch
+# Install script for directory: /cygdrive/c/Users/csu/CLionProjects/CSUBatch
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/cygdrive/c/Users/csu/CLionProjects/CSUBatch/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
