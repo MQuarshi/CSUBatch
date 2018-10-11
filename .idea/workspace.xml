@@ -43,11 +43,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5d3614a6-0fc1-4be4-a22d-741e17aa7bd4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Queue.h" beforeDir="false" afterPath="$PROJECT_DIR$/Queue.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CSUBatch.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CSUBatch.dir/main.c.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CSUBatch.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CSUBatch.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CSUBatch.exe.stackdump" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CSUBatch.exe.stackdump" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -71,8 +66,8 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="c" value="2815" />
-          <entry key="h" value="1125" />
+          <entry key="c" value="2843" />
+          <entry key="h" value="1129" />
           <entry key="txt" value="44" />
         </counts>
       </usages-collector>
@@ -80,7 +75,7 @@
         <counts>
           <entry key="CMakeLists.txt" value="2" />
           <entry key="Doxygen file" value="2" />
-          <entry key="ObjectiveC" value="3938" />
+          <entry key="ObjectiveC" value="3970" />
           <entry key="PLAIN_TEXT" value="42" />
         </counts>
       </usages-collector>
@@ -204,11 +199,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Queue.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="50" column="25" lean-forward="true" selection-start-line="50" selection-start-column="25" selection-end-line="50" selection-end-column="25" />
+            <state relative-caret-position="272">
+              <caret line="16" column="17" lean-forward="true" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
               <folding>
                 <element signature="e#41#58#0" expanded="true" />
               </folding>
@@ -216,11 +211,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+            <state relative-caret-position="236">
+              <caret line="60" column="26" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
               <folding>
                 <element signature="e#116#135#0" expanded="true" />
               </folding>
@@ -264,8 +259,8 @@
         <option value="$PROJECT_DIR$/Scheduler.h" />
         <option value="$PROJECT_DIR$/Scheduler.c" />
         <option value="$USER_HOME$/Downloads/commandline_parser.c" />
-        <option value="$PROJECT_DIR$/Queue.h" />
         <option value="$PROJECT_DIR$/main.c" />
+        <option value="$PROJECT_DIR$/Queue.h" />
       </list>
     </option>
   </component>
@@ -403,26 +398,25 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90922000" />
+    <option name="totallyTimeSpent" value="92125000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-5" y="0" width="864" height="965" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49943376" weight="0.27659574" />
       <window_info id="Structure" order="1" sideWeight="0.5018382" side_tool="true" weight="0.7058824" />
       <window_info id="Favorites" order="2" sideWeight="0.50056624" side_tool="true" weight="0.3351235" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30538923" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3988024" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30538923" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3988024" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TeamCity" order="8" weight="0.32897863" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49969932" weight="0.31856287" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49876237" weight="0.3135392" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49876237" weight="0.31257486" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50030065" side_tool="true" weight="0.32185274" />
       <window_info anchor="bottom" id="Version Control" order="12" weight="0.33173653" />
       <window_info anchor="bottom" id="CMake" order="13" sideWeight="0.89897776" weight="0.34428087" />
@@ -483,17 +477,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>183</line>
+          <line>181</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>181</line>
+          <line>179</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>63</line>
+          <line>62</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
@@ -549,22 +543,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Queue.h">
+    <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="50" column="25" lean-forward="true" selection-start-line="50" selection-start-column="25" selection-end-line="50" selection-end-column="25" />
+        <state relative-caret-position="236">
+          <caret line="60" column="26" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
           <folding>
-            <element signature="e#41#58#0" expanded="true" />
+            <element signature="e#116#135#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.c">
+    <entry file="file://$PROJECT_DIR$/Queue.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+        <state relative-caret-position="272">
+          <caret line="16" column="17" lean-forward="true" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
           <folding>
-            <element signature="e#116#135#0" expanded="true" />
+            <element signature="e#41#58#0" expanded="true" />
           </folding>
         </state>
       </provider>
