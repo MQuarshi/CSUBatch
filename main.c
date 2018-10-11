@@ -18,6 +18,9 @@
 #include "Queue.h"
 #include <pthread.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
@@ -45,9 +48,7 @@ void create_modules(void *module);
 char sched[8] = "fcfs";
 int resVal;
 
-/*
- * The run command - submit a job.
- */
+
 int cmd_run(int nargs, char **args) {
     job_t* job = malloc(sizeof(job_t));
     if (nargs != 4) {
@@ -55,12 +56,14 @@ int cmd_run(int nargs, char **args) {
         return EINVAL;
     }
 
-//    strcpy(job_queue->job->name, args[2]);
     int burst = atoi(args[2]);
     int priority = atoi(args[3]);
     job->run_time = burst;
     job->priority = priority;
+    strcpy(job->name, args[1]);
+
     if(job_queue->count < 1) {
+        job->sub_time = currentTimeMillis();
         job_queue->job = job;
         job_queue->count++;
     } else {
@@ -70,7 +73,6 @@ int cmd_run(int nargs, char **args) {
     if (job_queue->count == 1) {
         pthread_cond_signal((pthread_cond_t *) queue_mutex);
     }
-    /* Use execv to run the submitted job in csubatch */
     pid_t child = fork();
     char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
     if(child == 0) {
@@ -174,8 +176,8 @@ int cmd_list(int nargs, char **args) {
     int i;
     printf("The Current Scheduling policy is:%s\n", sched);
     printf("The following are the list of jobs:\n");
-    printf("Order\tJob Name\tBurst Time\tPriority\n");
-    queue_t* jobs = job_queue->next;
+    printf("Sub Time  \tJob Name\tBurst Time\tPriority\n");
+    queue_t* jobs = job_queue;
     int count = job_queue->count;
     for (i = 0; i < count; i++) {
         printf("%" PRId64 "\t%s\t\t%ld\t\t%d\n", jobs->job->sub_time, jobs->job->name, jobs->job->run_time, jobs->job->priority);
@@ -183,9 +185,8 @@ int cmd_list(int nargs, char **args) {
     }
     return (0);
 }
-/*
- * Process a single command.
- */
+
+
 int cmd_dispatch(char *cmd) {
     time_t beforesecs, aftersecs, secs;
     u_int32_t beforensecs, afternsecs, nsecs;
@@ -230,7 +231,6 @@ void create_modules(void *module) {
 
 void schedulerMod(char *string) {
 
-    //pthread_mutex_lock(queue_mutex);
     while (job_queue->count == 0) {
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
@@ -260,7 +260,7 @@ void dispatcherMod() {
 /*
  * Command line main loop.
  */
-int main() {
+void main() {
     char *buffer;
     size_t bufsize = 64;
     job_queue = init_queue(job_queue);
@@ -277,6 +277,7 @@ int main() {
         getline(&buffer, &bufsize, stdin);
         cmd_dispatch(buffer);
     }
-    return 0;
 }
 
+
+#pragma clang diagnostic pop

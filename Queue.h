@@ -12,7 +12,7 @@
 
 
 typedef struct Job {
-    char *name;
+    char *name [20];
     char* const namargs;
     int priority;
     int64_t sub_time;
@@ -51,6 +51,7 @@ void (add)(queue_t *head, job_t *job) {
     curr->next->job = job;
     curr->next->next = NULL;
     head->count++;
+    curr->count = head->count;
 }
 
 queue_t* init_queue(queue_t* head) {
