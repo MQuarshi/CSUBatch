@@ -16,6 +16,13 @@
 #include <wait.h>
 #include <inttypes.h>
 #include "Queue.h"
+#include <pthread.h>
+
+pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
+pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
+pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
+pthread_t tid;
 
 /* Error Code */
 #define EINVAL       1
@@ -52,6 +59,9 @@ int cmd_run(int nargs, char **args) {
     job->priority = priority;
     job_queue->add(job_queue, job);
 
+    if (job_queue->count == 1) {
+        pthread_cond_signal(queue_mutex);
+    }
     /* Use execv to run the submitted job in csubatch */
     pid_t child = fork();
     char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
@@ -74,6 +84,11 @@ int cmd_run(int nargs, char **args) {
  * The quit command.
  */
 int cmd_quit(int nargs, char **args) {
+    printf("Please display performance information before exiting csubatch!\n");
+    exit(0);
+}
+
+int cmd_sched(int nargs, char **args) {
     printf("Please display performance information before exiting csubatch!\n");
     exit(0);
 }
@@ -137,7 +152,9 @@ static struct {
         {"q\n",    cmd_quit},
         {"quit\n", cmd_quit},
         {"list\n", cmd_list},
-
+        {"FCFS\n", cmd_sched},
+        {"SJF\n", cmd_sched},
+        {"Priority\n", cmd_sched},
         /* Please add more operations below. */
         {NULL, NULL}
 };
@@ -220,4 +237,35 @@ int main() {
         cmd_dispatch(buffer);
     }
     return 0;
+}
+
+void create_modules(void *module) {
+    pthread_create(&tid, NULL, module, NULL);
+}
+
+void schedulerMod(char *string) {
+
+    //pthread_mutex_lock(queue_mutex);
+    while (job_queue->count == 0) {
+        pthread_cond_wait(emptyQ, queue_mutex);
+    }
+    if (strcmp(string, "FCFS") == 0) {
+        sort(job_queue, 2);
+    }
+
+    if (strcmp(string, "Priority") == 0) {
+        sort(job_queue, 1);
+    }
+
+    if (strcmp(string, "SJF") == 0) {
+        sort(job_queue, 3);
+    }
+
+
+}
+
+void dispatcherMod() {
+    while (job_queue->count != 0) {
+        execv(remove_head(job_queue)->job->name, 1);
+    }
 }
