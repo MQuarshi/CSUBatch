@@ -41,6 +41,7 @@ void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
 char sched[8] = "fcfs";
+int resVal;
 
 /*
  * The run command - submit a job.
@@ -52,7 +53,7 @@ int cmd_run(int nargs, char **args) {
         return EINVAL;
     }
 
-//    strcpy(job_queue->job->name, args[1]);
+    strcpy(job_queue->job->name, args[1]);
     int burst = atoi(args[2]);
     int priority = atoi(args[3]);
     job->run_time = burst;
@@ -89,7 +90,8 @@ int cmd_quit(int nargs, char **args) {
 }
 
 int cmd_sched(int nargs, char **args) {
-    printf("Please display performance information before exiting csubatch!\n");
+    //schedulerMod(args[1]);
+    //create_modules(schedulerMod);
     exit(0);
 }
 
@@ -216,6 +218,40 @@ int cmd_dispatch(char *cmd) {
     return EINVAL;
 }
 
+void create_modules(void *module) {
+    pthread_create(&tid, NULL, module, NULL);
+}
+
+void schedulerMod(char *string) {
+
+    //pthread_mutex_lock(queue_mutex);
+    while (job_queue->count == 0) {
+        pthread_cond_wait(&emptyQ, &queue_mutex);
+    }
+    if (strcmp(string, "FCFS") == 0) {
+        sort(job_queue, 2);
+    }
+
+    if (strcmp(string, "Priority") == 0) {
+        sort(job_queue, 1);
+    }
+
+    if (strcmp(string, "SJF") == 0) {
+        sort(job_queue, 3);
+    }
+
+    pthread_cond_signal(&condB);
+    pthread_mutex_lock(&queue_mutex);
+    pthread_cond_wait(&condA, &queue_mutex);
+
+}
+
+void dispatcherMod() {
+    while (job_queue->count != 0) {
+        while (pthread_cond_wait(&condB, &queue_mutex) != 0)
+            execv(remove_head(job_queue)->job->name, 1);
+    }
+}
 /*
  * Command line main loop.
  */
@@ -239,33 +275,3 @@ int main() {
     return 0;
 }
 
-void create_modules(void *module) {
-    pthread_create(&tid, NULL, module, NULL);
-}
-
-void schedulerMod(char *string) {
-
-    //pthread_mutex_lock(queue_mutex);
-    while (job_queue->count == 0) {
-        pthread_cond_wait(emptyQ, queue_mutex);
-    }
-    if (strcmp(string, "FCFS") == 0) {
-        sort(job_queue, 2);
-    }
-
-    if (strcmp(string, "Priority") == 0) {
-        sort(job_queue, 1);
-    }
-
-    if (strcmp(string, "SJF") == 0) {
-        sort(job_queue, 3);
-    }
-
-
-}
-
-void dispatcherMod() {
-    while (job_queue->count != 0) {
-        execv(remove_head(job_queue)->job->name, 1);
-    }
-}
