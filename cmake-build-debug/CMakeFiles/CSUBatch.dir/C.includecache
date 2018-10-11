@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/kengh/CLionProjects/CSUBatch/Queue.h
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
 time.h
 -
 stdlib.h
@@ -14,7 +14,7 @@ stdlib.h
 sys/time.h
 -
 
-/cygdrive/c/Users/kengh/CLionProjects/CSUBatch/main.c
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/main.c
 assert.h
 -
 unistd.h
@@ -34,9 +34,7 @@ wait.h
 inttypes.h
 -
 Queue.h
-/cygdrive/c/Users/kengh/CLionProjects/CSUBatch/Queue.h
+/cygdrive/c/Users/jazart/CLionProjects/CSUBatch/Queue.h
 pthread.h
 -
-
-/cygdrive/c/Users/kengh/CLionProjects/CSUBatch/menu.c
 

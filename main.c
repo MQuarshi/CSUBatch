@@ -37,9 +37,11 @@ int cmd_run(int nargs, char **args);
 
 int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
+void schedulerMod(char* string);
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
+void create_modules(void *module);
 char sched[8] = "fcfs";
 int resVal;
 
@@ -53,15 +55,20 @@ int cmd_run(int nargs, char **args) {
         return EINVAL;
     }
 
-    strcpy(job_queue->job->name, args[1]);
+//    strcpy(job_queue->job->name, args[2]);
     int burst = atoi(args[2]);
     int priority = atoi(args[3]);
     job->run_time = burst;
     job->priority = priority;
-    job_queue->add(job_queue, job);
+    if(job_queue->count < 1) {
+        job_queue->job = job;
+        job_queue->count++;
+    } else {
+        job_queue->add(job_queue, job);
+    }
 
     if (job_queue->count == 1) {
-        pthread_cond_signal(queue_mutex);
+        pthread_cond_signal((pthread_cond_t *) queue_mutex);
     }
     /* Use execv to run the submitted job in csubatch */
     pid_t child = fork();
@@ -90,9 +97,8 @@ int cmd_quit(int nargs, char **args) {
 }
 
 int cmd_sched(int nargs, char **args) {
-    //schedulerMod(args[1]);
-    //create_modules(schedulerMod);
-    exit(0);
+    schedulerMod(args[0]);
+    create_modules(schedulerMod);
 }
 
 /*
@@ -228,22 +234,21 @@ void schedulerMod(char *string) {
     while (job_queue->count == 0) {
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
-    if (strcmp(string, "FCFS") == 0) {
+    if (strcmp(string, "FCFS\n") == 0) {
         sort(job_queue, 2);
     }
 
-    if (strcmp(string, "Priority") == 0) {
+    if (strcmp(string, "Priority\n") == 0) {
         sort(job_queue, 1);
     }
 
-    if (strcmp(string, "SJF") == 0) {
+    if (strcmp(string, "SJF\n") == 0) {
         sort(job_queue, 3);
     }
 
     pthread_cond_signal(&condB);
     pthread_mutex_lock(&queue_mutex);
     pthread_cond_wait(&condA, &queue_mutex);
-
 }
 
 void dispatcherMod() {
