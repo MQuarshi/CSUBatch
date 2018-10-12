@@ -31,6 +31,7 @@ pthread_t tid;
 #define MAXMENUARGS  4
 #define MAXCMDLINE   64
 
+struct Job *result_queue[100];
 struct Queue_Node* job_queue;
 void menu_execute(char *line, int isargs);
 int cmd_run(int nargs, char **args);
@@ -44,6 +45,7 @@ int cmd_dispatch(char *cmd);
 void create_modules(void *module);
 char sched[8] = "fcfs";
 int resVal;
+
 
 /*
  * The run command - submit a job.
@@ -88,17 +90,11 @@ int cmd_run(int nargs, char **args) {
     return 1; /* if succeed */
 }
 
-/*
- * The quit command.
- */
-int cmd_quit(int nargs, char **args) {
-    printf("Please display performance information before exiting csubatch!\n");
-    exit(0);
-}
 
 int cmd_sched(int nargs, char **args) {
     schedulerMod(args[0]);
     create_modules(schedulerMod);
+    printf("Sorted");
 }
 
 /*
@@ -188,8 +184,9 @@ int cmd_list(int nargs, char **args) {
 /*
  * after 'quit', display performance
  */
-void performance(int nargs, char **args, result_count)
-{
+void dis_perfo(struct Job result_queue[]) {
+    int result_count = job_queue->count;
+    queue_t *jobs = job_queue->next;
     double turnaround = 0;
     double burstTime = 0;
     if(result_count == 0)
@@ -199,15 +196,25 @@ void performance(int nargs, char **args, result_count)
     }
     for(int i = 0;i < result_count; i++)
     {
-        turnaround += difftime(result_queue[i].end,result_queue[i].arrival);
-        burstTime += result_queue[i].burstTime;
+        turnaround = currentTimeMillis() - jobs->job->sub_time;
+        burstTime += jobs->job->run_time;
+
     }
-    printf("Total number jobs submitted:\t %d\n",result_count);
-    printf("Average turnaround time:\t %.2f\n",turnaround/result_count);
+    printf("Total number jobs submitted: %d\n", result_count);
     printf("Average BurstTime:\t\t %.2f\n",burstTime/result_count);
     printf("Average waiting time:\t\t %.2f\n",(turnaround-burstTime)/result_count);
     printf("Average Throughput:\t\t %.3f\n",(1/(turnaround/result_count)));
 }
+
+/*
+ * The quit command.
+ */
+int cmd_quit(int nargs, char **args) {
+    dis_perfo(result_queue);
+    printf("Please display performance information before exiting csubatch!\n");
+    exit(0);
+}
+
 /*
  * Process a single command.
  */
@@ -261,14 +268,17 @@ void schedulerMod(char *string) {
     }
     if (strcmp(string, "FCFS\n") == 0) {
         sort(job_queue, 2);
+        printf("Sorted");
     }
 
     if (strcmp(string, "Priority\n") == 0) {
         sort(job_queue, 1);
+        printf("Sorted");
     }
 
     if (strcmp(string, "SJF\n") == 0) {
         sort(job_queue, 3);
+        printf("Sorted");
     }
 
     pthread_cond_signal(&condB);
