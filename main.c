@@ -22,6 +22,7 @@ pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
 pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
+pthread_cond_t quitC = PTHREAD_COND_INITIALIZER;
 pthread_t tid;
 
 /* Error Code */
@@ -40,12 +41,14 @@ int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
 
 void schedulerMod();
+
+void dispactherMod();
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
 void create_modules(void *module);
 
-char *sched = "FCFS";
+char sched[15] = "FCFS";
 int reschedule = 0;
 
 
@@ -73,8 +76,9 @@ int cmd_run(int nargs, char **args) {
 
     if (job_queue->count == 1) {
         pthread_cond_signal((pthread_cond_t *) queue_mutex);
+        pthread_cond_signal(&emptyQ);
     }
-    /* Use execv to run the submitted job in csubatch */
+    /* Use execv to run the submitted job in csubatch */;
     pid_t child = fork();
     char *execv_args[] = {"C:\\Users\\kengh\\Desktop\\CSUBatch\\hello.exe", NULL};
     if(child == 0) {
@@ -94,9 +98,12 @@ int cmd_run(int nargs, char **args) {
 
 
 int cmd_sched(int nargs, char **args) {
-    sched = args[0];
-    create_modules(schedulerMod);
-    
+    //sched = args[0];
+    strcpy(sched, args[0]);
+    printf("%s\n", sched);
+    printf("%d\n", job_queue->count);
+    //create_modules(schedulerMod);
+
 }
 
 /*
@@ -266,6 +273,7 @@ void schedulerMod() {
 
     //pthread_mutex_lock(queue_mutex);
     while (job_queue->count == 0) {
+
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
     if (strcmp(sched, "FCFS\n") == 0) {
@@ -279,6 +287,7 @@ void schedulerMod() {
     }
 
     if (strcmp(sched, "SJF\n") == 0) {
+        printf("%s", sched);
         sort(job_queue, 3);
         printf("Sorted");
     }
@@ -286,6 +295,10 @@ void schedulerMod() {
     pthread_cond_signal(&condB);
     pthread_mutex_lock(&queue_mutex);
     pthread_cond_wait(&condA, &queue_mutex);
+
+    while (1) {
+
+    }
 }
 
 void dispatcherMod() {
@@ -318,6 +331,8 @@ int main() {
         exit(1);
     }
 
+    //create_modules(schedulerMod);
+    //create_modules(dispatcherMod);
     while (1) {
         printf("> [? for menu]: ");
         getline(&buffer, &bufsize, stdin);
