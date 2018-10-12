@@ -12,7 +12,7 @@
 
 
 typedef struct Job {
-    char *name [20];
+    char name [20];
     char* const namargs;
     int priority;
     int64_t sub_time;

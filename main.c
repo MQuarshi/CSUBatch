@@ -87,7 +87,7 @@ int cmd_run(int nargs, char **args) {
         waitpid(-1, NULL, 0);
     }
     printf("\nuse execv to run the job in csubatch.\n");
-    return 1; /* if succeed */
+    return 1;
 }
 
 /*
@@ -100,7 +100,8 @@ int cmd_quit(int nargs, char **args) {
 
 int cmd_sched(int nargs, char **args) {
     schedulerMod(args[0]);
-    create_modules(schedulerMod);
+//    create_modules(schedulerMod);
+    return 1;
 }
 
 /*
@@ -246,9 +247,9 @@ void schedulerMod(char *string) {
         sort(job_queue, 3);
     }
 
-    pthread_cond_signal(&condB);
-    pthread_mutex_lock(&queue_mutex);
-    pthread_cond_wait(&condA, &queue_mutex);
+//    pthread_cond_signal(&condB);
+//    pthread_mutex_lock(&queue_mutex);
+//    pthread_cond_wait(&condA, &queue_mutex);
 }
 
 void dispatcherMod() {
