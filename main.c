@@ -38,13 +38,15 @@ int cmd_run(int nargs, char **args);
 
 int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
-void schedulerMod(char* string);
+
+void schedulerMod();
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
 void create_modules(void *module);
-char sched[8] = "fcfs";
-int resVal;
+
+char *sched = "FCFS";
+int reschedule = 0;
 
 
 /*
@@ -74,10 +76,10 @@ int cmd_run(int nargs, char **args) {
     }
     /* Use execv to run the submitted job in csubatch */
     pid_t child = fork();
-    char *execv_args[] = {"C:\\Users\\csu\\CLionProjects\\CSUBatch\\hello.exe", NULL };
+    char *execv_args[] = {"C:\\Users\\kengh\\Desktop\\CSUBatch\\hello.exe", NULL};
     if(child == 0) {
-        if(execv("C:\\Users\\csu\\CLionProjects\\CSUBatch\\hello.exe",
-                execv_args) < 0) {
+        if (execv("C:\\Users\\kengh\\Desktop\\CSUBatch\\hello.exe",
+                  execv_args) < 0) {
             printf("\nError\n");
             exit(0);
         }
@@ -92,9 +94,9 @@ int cmd_run(int nargs, char **args) {
 
 
 int cmd_sched(int nargs, char **args) {
-    schedulerMod(args[0]);
+    sched = args[0];
     create_modules(schedulerMod);
-    printf("Sorted");
+    
 }
 
 /*
@@ -260,23 +262,23 @@ void create_modules(void *module) {
     pthread_create(&tid, NULL, module, NULL);
 }
 
-void schedulerMod(char *string) {
+void schedulerMod() {
 
     //pthread_mutex_lock(queue_mutex);
     while (job_queue->count == 0) {
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
-    if (strcmp(string, "FCFS\n") == 0) {
+    if (strcmp(sched, "FCFS\n") == 0) {
         sort(job_queue, 2);
         printf("Sorted");
     }
 
-    if (strcmp(string, "Priority\n") == 0) {
+    if (strcmp(sched, "Priority\n") == 0) {
         sort(job_queue, 1);
         printf("Sorted");
     }
 
-    if (strcmp(string, "SJF\n") == 0) {
+    if (strcmp(sched, "SJF\n") == 0) {
         sort(job_queue, 3);
         printf("Sorted");
     }
@@ -288,7 +290,12 @@ void schedulerMod(char *string) {
 
 void dispatcherMod() {
     while (job_queue->count != 0) {
-        while (pthread_cond_wait(&condB, &queue_mutex) != 0)
+        if (reschedule == 1) {
+            pthread_mutex_lock(&queue_mutex);
+            while (pthread_cond_wait(&condB, &queue_mutex) != 0);
+            reschedule = 0;
+        }
+
             execv(remove_head(job_queue)->job->name, 1);
     }
 }
