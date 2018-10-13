@@ -90,7 +90,7 @@ int cmd_run(int nargs, char **args) {
     char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
     if(child == 0) {
         if(execv("C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe",
-                execv_args) < 0) {
+                 execv_args) < 0) {
             printf("\nError\n");
             exit(0);
         }
@@ -277,21 +277,22 @@ void create_modules(void *module) {
 
 void schedulerMod() {
 
-    //pthread_mutex_lock(queue_mutex);
-    while (1) {while (job_queue->count == 0) {
+    while (1) {
+        while (job_queue->count == 0) {
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
+
     if (strcmp(sched, "FCFS\n") == 0) {
-        sort(job_queue, 2);
+        job_queue = sort(job_queue, 2);
     }
 
     if (strcmp(sched, "Priority\n") == 0) {
-        sort(job_queue, 1);
+        job_queue = sort(job_queue, 1);
     }
 
     if (strcmp(sched, "SJF\n") == 0) {
         printf("%s", sched);
-        sort(job_queue, 3);
+        job_queue = sort(job_queue, 3);
     }
 
     pthread_cond_signal(&condB);
@@ -358,29 +359,23 @@ void schedulerMod2() {
         pthread_mutex_lock(&queue_mutex);
 
         if (strcmp(sched, "FCFS\n") == 0) {
-            sort(job_queue, 2);
+            job_queue = sort(job_queue, 2);
             printf("Sorted");
         }
 
         if (strcmp(sched, "Priority\n") == 0) {
-            sort(job_queue, 1);
+            job_queue = sort(job_queue, 1);
             printf("Sorted");
         }
 
         if (strcmp(sched, "SJF\n") == 0) {
             printf("%s", sched);
-            sort(job_queue, 3);
+            job_queue = sort(job_queue, 3);
             printf("Sorted");
         }
         reschedule = 0;
 
-            execv(remove_head(job_queue)->job->name, 1);
-    }
-}
-        //pthread_cond_signal(&condB);
-
-
-
+        execv(remove_head(job_queue)->job->name, 1);
     }
 }
 
@@ -394,41 +389,19 @@ int main() {
     job_queue = init_queue(job_queue);
     int bool = 1;
 
-    for(int i = 0; i < 5; ++i) {
-        job_t* job = malloc(sizeof(job_t));
-        job->run_time = i * i;
-        job->priority = i + 1;
-        strcpy(job->name, "job");
-        char num [3];
-        strcat(job->name, num);
-        if(i == 1) {
-            job_queue->job = job;
-            continue;
-        }
-        job_queue->add(job_queue, job);
-    }
-    job_queue = sort(job_queue, 1);
-    for (int j = 0; j < 5; ++j) {
-        queue_t* cpy = job_queue;
-        printf("%s   %d\n", job_queue->job->name, job_queue->job->priority);
-        job_queue = job_queue->next;
+    buffer = (char *) malloc(bufsize * sizeof(char));
+    if (buffer == NULL) {
+        perror("Unable to malloc buffer");
+        exit(1);
     }
 
-
-//
-//    buffer = (char *) malloc(bufsize * sizeof(char));
-//    if (buffer == NULL) {
-//        perror("Unable to malloc buffer");
-//        exit(1);
-//    }
-//
-//    //create_modules(schedulerMod);
-//    //create_modules(dispatcherMod);
-//    while (1) {
-//        printf("> [? for menu]: ");
-//        getline(&buffer, &bufsize, stdin);
-//        cmd_dispatch(buffer);
-//    }
+    //create_modules(schedulerMod);
+    //create_modules(dispatcherMod);
+    while (1) {
+        printf("> [? for menu]: ");
+        getline(&buffer, &bufsize, stdin);
+        cmd_dispatch(buffer);
+    }
     create_modules(schedulerMod2);
     sleep(8);
     create_modules(dispatcherMod);
