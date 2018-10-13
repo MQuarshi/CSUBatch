@@ -22,6 +22,10 @@ pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
 pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
+pthread_cond_t emptyA = PTHREAD_COND_INITIALIZER;
+pthread_cond_t emptyB = PTHREAD_COND_INITIALIZER;
+pthread_cond_t schedA = PTHREAD_COND_INITIALIZER;
+pthread_cond_t schedB = PTHREAD_COND_INITIALIZER;
 pthread_cond_t quitC = PTHREAD_COND_INITIALIZER;
 pthread_t tid;
 
@@ -40,8 +44,10 @@ int cmd_run(int nargs, char **args);
 int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
 
+
 void schedulerMod();
 
+void schedulerMod2();
 void dispactherMod();
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
@@ -50,6 +56,7 @@ void create_modules(void *module);
 
 char sched[15] = "FCFS";
 int reschedule = 0;
+int quitBool = 0;
 
 
 /*
@@ -76,7 +83,8 @@ int cmd_run(int nargs, char **args) {
 
     if (job_queue->count == 1) {
         pthread_cond_signal((pthread_cond_t *) queue_mutex);
-        pthread_cond_signal(&emptyQ);
+        pthread_cond_signal(&condA);
+        pthread_cond_signal(&condB);
     }
     /* Use execv to run the submitted job in csubatch */;
     pid_t child = fork();
@@ -272,48 +280,110 @@ void create_modules(void *module) {
 void schedulerMod() {
 
     //pthread_mutex_lock(queue_mutex);
-    while (job_queue->count == 0) {
-
-        pthread_cond_wait(&emptyQ, &queue_mutex);
-    }
-    if (strcmp(sched, "FCFS\n") == 0) {
-        sort(job_queue, 2);
-        printf("Sorted");
-    }
-
-    if (strcmp(sched, "Priority\n") == 0) {
-        sort(job_queue, 1);
-        printf("Sorted");
-    }
-
-    if (strcmp(sched, "SJF\n") == 0) {
-        printf("%s", sched);
-        sort(job_queue, 3);
-        printf("Sorted");
-    }
-
-    pthread_cond_signal(&condB);
-    pthread_mutex_lock(&queue_mutex);
-    pthread_cond_wait(&condA, &queue_mutex);
-
     while (1) {
+        while (job_queue->count == 0) {
+
+            pthread_cond_wait(&emptyQ, &queue_mutex);
+        }
+        if (strcmp(sched, "FCFS\n") == 0) {
+            sort(job_queue, 2);
+            printf("Sorted");
+        }
+
+        if (strcmp(sched, "Priority\n") == 0) {
+            sort(job_queue, 1);
+            printf("Sorted");
+        }
+
+        if (strcmp(sched, "SJF\n") == 0) {
+            printf("%s", sched);
+            sort(job_queue, 3);
+            printf("Sorted");
+        }
+
+        pthread_cond_signal(&condB);
+        pthread_mutex_lock(&queue_mutex);
+        pthread_cond_wait(&condA, &queue_mutex);
+
 
     }
 }
 
 void dispatcherMod() {
-    while (job_queue->count != 0) {
+    while (1) {
+        if (quitBool == 1) {
+            pthread_exit(NULL);
+        }
+
+        if (job_queue->count == 0) {
+            pthread_mutex_lock(&queue_mutex);
+            while (pthread_cond_wait(&condB, &queue_mutex) != 0);
+            pthread_mutex_unlock(&queue_mutex);
+        }
+
         if (reschedule == 1) {
             pthread_mutex_lock(&queue_mutex);
             while (pthread_cond_wait(&condB, &queue_mutex) != 0);
-            reschedule = 0;
         }
 
-            execv(remove_head(job_queue)->job->name, 1);
+        execv(remove_head(job_queue)->job->name, NULL);
+        sleep(15);
+
     }
 }
 
+void schedulerMod2() {
 
+    //pthread_mutex_lock(queue_mutex);
+    while (1) {
+
+        if (quitBool == 1) {
+            pthread_exit(NULL);
+        }
+
+        if (job_queue->count == 0) {
+            pthread_mutex_lock(&queue_mutex);
+            while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
+                if (quitBool == 1) {
+                    pthread_exit(NULL);
+                }
+            }
+            pthread_mutex_unlock(&queue_mutex);
+        }
+        if (reschedule == 0) {
+            pthread_mutex_lock(&queue_mutex);
+            while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
+                if (quitBool == 1) {
+                    pthread_exit(NULL);
+                }
+            }
+        }
+
+        pthread_mutex_lock(&queue_mutex);
+
+        if (strcmp(sched, "FCFS\n") == 0) {
+            sort(job_queue, 2);
+            printf("Sorted");
+        }
+
+        if (strcmp(sched, "Priority\n") == 0) {
+            sort(job_queue, 1);
+            printf("Sorted");
+        }
+
+        if (strcmp(sched, "SJF\n") == 0) {
+            printf("%s", sched);
+            sort(job_queue, 3);
+            printf("Sorted");
+        }
+        reschedule = 0;
+
+        //pthread_cond_signal(&condB);
+
+
+
+    }
+}
 
 
 /*
@@ -323,6 +393,7 @@ int main() {
     char *buffer;
     size_t bufsize = 64;
     job_queue = init_queue(job_queue);
+    int bool = 1;
 
 
     buffer = (char *) malloc(bufsize * sizeof(char));
@@ -331,11 +402,15 @@ int main() {
         exit(1);
     }
 
-    //create_modules(schedulerMod);
-    //create_modules(dispatcherMod);
-    while (1) {
+    create_modules(schedulerMod2);
+    sleep(8);
+    create_modules(dispatcherMod);
+    while (bool == 1) {
         printf("> [? for menu]: ");
         getline(&buffer, &bufsize, stdin);
+        if (strcmp(buffer, "quit") == 0) {
+            bool = 0;
+        }
         cmd_dispatch(buffer);
     }
     return 0;
