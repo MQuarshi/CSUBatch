@@ -275,28 +275,29 @@ void create_modules(void *module) {
     pthread_create(&tid, NULL, module, NULL);
 }
 
+//Scheduler thread that works, but doesn't run concurrently
 void schedulerMod() {
 
     //pthread_mutex_lock(queue_mutex);
     while (1) {while (job_queue->count == 0) {
-        pthread_cond_wait(&emptyQ, &queue_mutex);
-    }
-    if (strcmp(sched, "FCFS\n") == 0) {
-        sort(job_queue, 2);
-    }
+            pthread_cond_wait(&emptyQ, &queue_mutex);
+        }
+        if (strcmp(sched, "FCFS\n") == 0) {
+            sort(job_queue, 2);
+        }
 
-    if (strcmp(sched, "Priority\n") == 0) {
-        sort(job_queue, 1);
-    }
+        if (strcmp(sched, "Priority\n") == 0) {
+            sort(job_queue, 1);
+        }
 
-    if (strcmp(sched, "SJF\n") == 0) {
-        printf("%s", sched);
-        sort(job_queue, 3);
-    }
+        if (strcmp(sched, "SJF\n") == 0) {
+            printf("%s", sched);
+            sort(job_queue, 3);
+        }
 
-    pthread_cond_signal(&condB);
-    pthread_mutex_lock(&queue_mutex);
-    pthread_cond_wait(&condA, &queue_mutex);
+        pthread_cond_signal(&condB);
+        pthread_mutex_lock(&queue_mutex);
+        pthread_cond_wait(&condA, &queue_mutex);
         pthread_cond_signal(&condB);
         pthread_mutex_lock(&queue_mutex);
         pthread_cond_wait(&condA, &queue_mutex);
@@ -307,16 +308,24 @@ void schedulerMod() {
 
 void dispatcherMod() {
     while (1) {
+
+        //While it loops, if the quit commans is used, then it will exit
         if (quitBool == 1) {
             pthread_exit(NULL);
         }
 
+        //if job queue is empty, the thread will wait until
         if (job_queue->count == 0) {
             pthread_mutex_lock(&queue_mutex);
-            while (pthread_cond_wait(&condB, &queue_mutex) != 0);
+            while (pthread_cond_wait(&condB, &queue_mutex) != 0) {
+                if (quitBool == 1) {
+                    pthread_exit(NULL);
+                }
+            }
             pthread_mutex_unlock(&queue_mutex);
         }
 
+        //If the schedule command or a new job hasnt been added, the this thread will wait so it can reorder the queue
         if (reschedule == 1) {
             pthread_mutex_lock(&queue_mutex);
             while (pthread_cond_wait(&condB, &queue_mutex) != 0);
@@ -328,34 +337,37 @@ void dispatcherMod() {
     }
 }
 
+//Version that will run concurrent
 void schedulerMod2() {
 
     //pthread_mutex_lock(queue_mutex);
     while (1) {
 
+        //While it loops, if the quit commans is used, then it will exit
         if (quitBool == 1) {
             pthread_exit(NULL);
         }
 
+        //if job queue is empty, the thread will wait until
         if (job_queue->count == 0) {
             pthread_mutex_lock(&queue_mutex);
             while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
-                if (quitBool == 1) {
+                if (quitBool == 1) {   //While waiting, should the quit command be entered, the thread will exit
                     pthread_exit(NULL);
                 }
             }
             pthread_mutex_unlock(&queue_mutex);
         }
-        if (reschedule == 0) {
+        if (reschedule == 0) {  // If the schedule command or a new job hasnt been added, the this thread will wait
             pthread_mutex_lock(&queue_mutex);
             while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
                 if (quitBool == 1) {
-                    pthread_exit(NULL);
+                    pthread_exit(NULL); // If quit command is enter while waiting, then it will exit
                 }
             }
         }
 
-        pthread_mutex_lock(&queue_mutex);
+        //pthread_mutex_lock(&queue_mutex);
 
         if (strcmp(sched, "FCFS\n") == 0) {
             sort(job_queue, 2);
@@ -372,17 +384,18 @@ void schedulerMod2() {
             sort(job_queue, 3);
             printf("Sorted");
         }
-        reschedule = 0;
+        reschedule = 0; //Once the scheduling is completed, the variable will be reset that way
+        //the thread will have to wait until the switch command is called
 
-            execv(remove_head(job_queue)->job->name, 1);
+
     }
 }
         //pthread_cond_signal(&condB);
 
 
 
-    }
-}
+
+
 
 
 /*
