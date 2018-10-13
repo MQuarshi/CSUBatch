@@ -18,15 +18,16 @@
 #include "Queue.h"
 #include <pthread.h>
 
-pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
-pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER; //Mutex to handle access to the queue
+pthread_mutex_t emptyA_mutex = PTHREAD_MUTEX_INITIALIZER; //Mutex used to make scheduler thread wait if queue is empty
+pthread_mutex_t emptyB_mutex = PTHREAD_MUTEX_INITIALIZER; //Mutex used to make dispatcher thread wait if queue is empty
+pthread_mutex_t reschedA_mutex = PTHREAD_MUTEX_INITIALIZER; //Mutex used to make scheduler thread wait when sheduling is not in use
+pthread_cond_t condA = PTHREAD_COND_INITIALIZER; //Condition used to make scheduler thread wait ig scheduling is not in use
+pthread_cond_t condB = PTHREAD_COND_INITIALIZER; //Condtion used to make dispatcher thread wait if scheduling is in use
 pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
-pthread_cond_t emptyA = PTHREAD_COND_INITIALIZER;
-pthread_cond_t emptyB = PTHREAD_COND_INITIALIZER;
-pthread_cond_t schedA = PTHREAD_COND_INITIALIZER;
-pthread_cond_t schedB = PTHREAD_COND_INITIALIZER;
-pthread_cond_t quitC = PTHREAD_COND_INITIALIZER;
+pthread_cond_t emptyA = PTHREAD_COND_INITIALIZER;//Condition used to make scheduler thread wait if queue is empty
+pthread_cond_t emptyB = PTHREAD_COND_INITIALIZER;//Condtiion used to make dispatcher thread wait if queue is empty
+
 pthread_t tid;
 
 /* Error Code */
@@ -44,8 +45,9 @@ int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
 
 void schedulerMod();
-
 void schedulerMod2();
+
+void schedulerMod3();
 void dispactherMod();
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
@@ -82,9 +84,9 @@ int cmd_run(int nargs, char **args) {
     }
 
     if (job_queue->count == 1) {
-        pthread_cond_signal((pthread_cond_t *) queue_mutex);
-        pthread_cond_signal(&condA);
-        pthread_cond_signal(&condB);
+        //pthread_cond_signal((pthread_cond_t *) queue_mutex);
+        pthread_cond_signal(&emptyB);
+        pthread_cond_signal(emptyA);
     }
     pid_t child = fork();
     char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
@@ -109,6 +111,7 @@ int cmd_sched(int nargs, char **args) {
     printf("%s\n", sched);
     printf("%d\n", job_queue->count);
 //    create_modules(schedulerMod);
+    reschedule = 1;
     return 1;
 }
 
@@ -314,23 +317,24 @@ void dispatcherMod() {
             pthread_exit(NULL);
         }
 
+        pthread_mutex_lock(&emptyB_mutex);
         //if job queue is empty, the thread will wait until
-        if (job_queue->count == 0) {
-            pthread_mutex_lock(&queue_mutex);
-            while (pthread_cond_wait(&condB, &queue_mutex) != 0) {
-                if (quitBool == 1) {
+        while (job_queue->count == 0) {
+            pthread_cond_wait(&emptyB, &emptyB_mutex);
+            if (quitBool == 1) {
                     pthread_exit(NULL);
-                }
             }
-            pthread_mutex_unlock(&queue_mutex);
+
+            //pthread_mutex_unlock(&queue_mutex);
         }
 
         //If the schedule command or a new job hasnt been added, the this thread will wait so it can reorder the queue
-        if (reschedule == 1) {
-            pthread_mutex_lock(&queue_mutex);
-            while (pthread_cond_wait(&condB, &queue_mutex) != 0);
+        pthread_mutex_lock(&queue_mutex);
+        while (reschedule == 1) {
+            pthread_cond_wait(&condB, &queue_mutex);
         }
 
+        pthread_mutex_unlock(&queue_mutex);
         execv(remove_head(job_queue)->job->name, NULL);
         sleep(15);
 
@@ -340,7 +344,6 @@ void dispatcherMod() {
 //Version that will run concurrent
 void schedulerMod2() {
 
-    //pthread_mutex_lock(queue_mutex);
     while (1) {
 
         //While it loops, if the quit commans is used, then it will exit
@@ -348,27 +351,32 @@ void schedulerMod2() {
             pthread_exit(NULL);
         }
 
+        pthread_mutex_lock(&emptyA_mutex); //locks downn the mutex
         //if job queue is empty, the thread will wait until
-        if (job_queue->count == 0) {
-            pthread_mutex_lock(&queue_mutex);
-            while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
-                if (quitBool == 1) {   //While waiting, should the quit command be entered, the thread will exit
-                    pthread_exit(NULL);
-                }
+        while (job_queue->count == 0) {
+
+            pthread_cond_wait(&emptyA, &emptyA_mutex);  //releases mutex, and waits for signal
+            if (quitBool == 1) {   //While waiting, should the quit command be entered, the thread will exit
+                pthread_exit(NULL);
             }
-            pthread_mutex_unlock(&queue_mutex);
-        }
-        if (reschedule == 0) {  // If the schedule command or a new job hasnt been added, the this thread will wait
-            pthread_mutex_lock(&queue_mutex);
-            while (pthread_cond_wait(&condA, &queue_mutex) != 0) {
-                if (quitBool == 1) {
-                    pthread_exit(NULL); // If quit command is enter while waiting, then it will exit
-                }
-            }
+
+            //pthread_mutex_unlock(&queue_mutex);
         }
 
+        pthread_mutex_unlock(&emptyA_mutex);
+
+        pthread_mutex_lock(&reschedA_mutex);
+        while (reschedule == 0) {  // If the schedule command or a new job hasnt been added, the this thread will wait
+            pthread_cond_wait(&condA, &reschedA_mutex);
+            if (quitBool == 1) {
+                pthread_exit(NULL); // If quit command is enter while waiting, then it will exit
+            }
+
+        }
+
+        pthread_mutex_unlock(&reschedA_mutex);
         //pthread_mutex_lock(&queue_mutex);
-
+        pthread_mutex_lock(&queue_mutex);
         if (strcmp(sched, "FCFS\n") == 0) {
             sort(job_queue, 2);
             printf("Sorted");
@@ -384,6 +392,8 @@ void schedulerMod2() {
             sort(job_queue, 3);
             printf("Sorted");
         }
+        pthread_mutex_unlock(&queue_mutex);
+        pthread_cond_signal(&condB);
         reschedule = 0; //Once the scheduling is completed, the variable will be reset that way
         //the thread will have to wait until the switch command is called
 
@@ -443,8 +453,12 @@ int main() {
 //        cmd_dispatch(buffer);
 //    }
     create_modules(schedulerMod2);
-    sleep(8);
+    printf("test\n");
+    //sleep(8);
+    printf("test2\n");
     create_modules(dispatcherMod);
+    printf("test3\n");
+    //printf("test2\n");
     while (bool == 1) {
         printf("> [? for menu]: ");
         getline(&buffer, &bufsize, stdin);
