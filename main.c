@@ -18,13 +18,11 @@
 #include "Queue.h"
 #include <pthread.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunknown-pragmas"
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t condA = PTHREAD_COND_INITIALIZER;
 pthread_cond_t condB = PTHREAD_COND_INITIALIZER;
 pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
+pthread_cond_t quitC = PTHREAD_COND_INITIALIZER;
 pthread_t tid;
 
 /* Error Code */
@@ -40,14 +38,18 @@ int cmd_run(int nargs, char **args);
 
 int cmd_list(int nargs, char **args);
 int cmd_quit(int nargs, char **args);
-void schedulerMod(char* string);
+
+void schedulerMod();
+
+void dispactherMod();
 void showmenu(const char *name, const char *x[]);
 int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
 void create_modules(void *module);
-char sched[8] = "fcfs";
-int resVal;
 
+
+char sched[15] = "FCFS";
+int reschedule = 0;
 
 int cmd_run(int nargs, char **args) {
     job_t* job = malloc(sizeof(job_t));
@@ -72,6 +74,7 @@ int cmd_run(int nargs, char **args) {
 
     if (job_queue->count == 1) {
         pthread_cond_signal((pthread_cond_t *) queue_mutex);
+        pthread_cond_signal(&emptyQ);
     }
     pid_t child = fork();
     char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
@@ -90,17 +93,12 @@ int cmd_run(int nargs, char **args) {
     return 1;
 }
 
-/*
- * The quit command.
- */
-int cmd_quit(int nargs, char **args) {
-    printf("Please display performance information before exiting csubatch!\n");
-    exit(0);
-}
 
 int cmd_sched(int nargs, char **args) {
-    schedulerMod(args[0]);
-//    create_modules(schedulerMod);
+    strcpy(sched, args[0]);
+    printf("%s\n", sched);
+    printf("%d\n", job_queue->count);
+    create_modules(schedulerMod);
     return 1;
 }
 
@@ -188,6 +186,43 @@ int cmd_list(int nargs, char **args) {
 }
 
 
+/*
+ * after 'quit', display performance
+ */
+void dis_perfo() {
+    int result_count = job_queue->count;
+    queue_t *jobs = job_queue->next;
+    double turnaround = 0;
+    double burstTime = 0;
+    if(result_count == 0)
+    {
+        printf("Program end\n");
+        return ;
+    }
+    for(int i = 0;i < result_count; i++)
+    {
+        turnaround = currentTimeMillis() - jobs->job->sub_time;
+        burstTime += jobs->job->run_time;
+
+    }
+    printf("Total number jobs submitted: %d\n", result_count);
+    printf("Average BurstTime:\t\t %.2f\n",burstTime/result_count);
+    printf("Average waiting time:\t\t %.2f\n",(turnaround-burstTime)/result_count);
+    printf("Average Throughput:\t\t %.3f\n",(1/(turnaround/result_count)));
+}
+
+/*
+ * The quit command.
+ */
+int cmd_quit(int nargs, char **args) {
+    dis_perfo();
+    printf("Please display performance information before exiting csubatch!\n");
+    exit(0);
+}
+
+/*
+ * Process a single command.
+ */
 int cmd_dispatch(char *cmd) {
     time_t beforesecs, aftersecs, secs;
     u_int32_t beforensecs, afternsecs, nsecs;
@@ -230,54 +265,85 @@ void create_modules(void *module) {
     pthread_create(&tid, NULL, module, NULL);
 }
 
-void schedulerMod(char *string) {
+void schedulerMod() {
 
+    //pthread_mutex_lock(queue_mutex);
     while (job_queue->count == 0) {
         pthread_cond_wait(&emptyQ, &queue_mutex);
     }
-    if (strcmp(string, "FCFS\n") == 0) {
+    if (strcmp(sched, "FCFS\n") == 0) {
         sort(job_queue, 2);
     }
 
-    if (strcmp(string, "Priority\n") == 0) {
+    if (strcmp(sched, "Priority\n") == 0) {
         sort(job_queue, 1);
     }
 
-    if (strcmp(string, "SJF\n") == 0) {
+    if (strcmp(sched, "SJF\n") == 0) {
+        printf("%s", sched);
         sort(job_queue, 3);
     }
 
-//    pthread_cond_signal(&condB);
-//    pthread_mutex_lock(&queue_mutex);
-//    pthread_cond_wait(&condA, &queue_mutex);
+    pthread_cond_signal(&condB);
+    pthread_mutex_lock(&queue_mutex);
+    pthread_cond_wait(&condA, &queue_mutex);
 }
 
 void dispatcherMod() {
     while (job_queue->count != 0) {
-        while (pthread_cond_wait(&condB, &queue_mutex) != 0)
+        if (reschedule == 1) {
+            pthread_mutex_lock(&queue_mutex);
+            while (pthread_cond_wait(&condB, &queue_mutex) != 0);
+            reschedule = 0;
+        }
+
             execv(remove_head(job_queue)->job->name, 1);
     }
 }
 /*
  * Command line main loop.
  */
-void main() {
+int main() {
     char *buffer;
     size_t bufsize = 64;
     job_queue = init_queue(job_queue);
 
-
-    buffer = (char *) malloc(bufsize * sizeof(char));
-    if (buffer == NULL) {
-        perror("Unable to malloc buffer");
-        exit(1);
+    for(int i = 0; i < 5; ++i) {
+        job_t* job = malloc(sizeof(job_t));
+        job->run_time = i * i;
+        job->priority = i + 1;
+        strcpy(job->name, "job");
+        char num [3];
+        strcat(job->name, num);
+        if(i == 1) {
+            job_queue->job = job;
+            continue;
+        }
+        job_queue->add(job_queue, job);
+    }
+    job_queue = sort(job_queue, 1);
+    for (int j = 0; j < 5; ++j) {
+        queue_t* cpy = job_queue;
+        printf("%s   %d\n", job_queue->job->name, job_queue->job->priority);
+        job_queue = job_queue->next;
     }
 
-    while (1) {
-        printf("> [? for menu]: ");
-        getline(&buffer, &bufsize, stdin);
-        cmd_dispatch(buffer);
-    }
+
+//
+//    buffer = (char *) malloc(bufsize * sizeof(char));
+//    if (buffer == NULL) {
+//        perror("Unable to malloc buffer");
+//        exit(1);
+//    }
+//
+//    //create_modules(schedulerMod);
+//    //create_modules(dispatcherMod);
+//    while (1) {
+//        printf("> [? for menu]: ");
+//        getline(&buffer, &bufsize, stdin);
+//        cmd_dispatch(buffer);
+//    }
+    return 0;
 }
 
 

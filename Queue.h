@@ -15,8 +15,9 @@ typedef struct Job {
     char name [20];
     char* const namargs;
     int priority;
-    int64_t sub_time;
-    timer_t run_time;
+
+    int64_t sub_time; //arrival
+    timer_t run_time;//burst time
 
 } job_t;
 
@@ -69,19 +70,19 @@ queue_t* sort(queue_t* jobs, int type) {
     queue_t* p = jobs->next->next;
     while(p && p->next) {
         q = q->next;
-        p = p->next;
+        p = p->next->next;
     }
 
     queue_t* mid = q->next;
     q->next = NULL;
     queue_t* fast = sort(jobs, type);
     queue_t* slow = sort(mid, type);
-    queue_t ret[1], * tail = ret;
+    queue_t ret[1];
+    queue_t* tail = ret;
     switch(type) {
         /// sort by priority
-
         case 1:
-            while(fast && slow) {
+            while(fast != NULL && slow != NULL) {
                 if(fast->job->priority > slow->job->priority) {
                     tail->next = fast;
                     tail = fast;
@@ -93,10 +94,10 @@ queue_t* sort(queue_t* jobs, int type) {
                 }
             }
             break;
-            /// sort by submission time-fcfs
+//            /// sort by submission time-fcfs
         case 2:
-            while(fast && slow) {
-                if(fast->job->sub_time < slow->job->sub_time) {
+            while(fast != NULL && slow != NULL) {
+                if(fast->job->sub_time <= slow->job->sub_time) {
                     tail->next = fast;
                     tail = fast;
                     fast = fast->next;
@@ -109,8 +110,8 @@ queue_t* sort(queue_t* jobs, int type) {
             break;
             /// sort by job time-sjf
         case 3:
-            while(fast && slow) {
-                if(fast->job->run_time < slow->job->run_time) {
+            while(fast != NULL && slow != NULL) {
+                if(fast->job->run_time <= slow->job->run_time) {
                     tail->next = fast;
                     tail = fast;
                     fast = fast->next;
@@ -124,7 +125,6 @@ queue_t* sort(queue_t* jobs, int type) {
         default:
             return jobs;
     }
-
 
     while(fast) {
         tail->next = fast;
