@@ -275,7 +275,6 @@ int cmd_dispatch(char *cmd) {
 }
 
 void create_modules(void *module) {
-
     pthread_create(&tid, NULL, module, NULL);
 }
 
@@ -380,18 +379,18 @@ void schedulerMod2() {
         //pthread_mutex_lock(&queue_mutex);
         pthread_mutex_lock(&queue_mutex);
         if (strcmp(sched, "FCFS\n") == 0) {
-            sort(job_queue, 2);
+            job_queue = sort(job_queue, 2);
             printf("Sorted");
         }
 
         if (strcmp(sched, "Priority\n") == 0) {
-            sort(job_queue, 1);
+            job_queue = sort(job_queue, 1);
             printf("Sorted");
         }
 
         if (strcmp(sched, "SJF\n") == 0) {
             printf("%s", sched);
-            sort(job_queue, 3);
+            job_queue = sort(job_queue, 3);
             printf("Sorted");
         }
         pthread_mutex_unlock(&queue_mutex);
@@ -419,7 +418,19 @@ int main() {
     job_queue = init_queue(job_queue);
     int bool = 1;
 
+    buffer = (char *) malloc(bufsize * sizeof(char));
+    if (buffer == NULL) {
+        perror("Unable to malloc buffer");
+        exit(1);
+    }
 
+    //create_modules(schedulerMod);
+    //create_modules(dispatcherMod);
+    while (1) {
+        printf("> [? for menu]: ");
+        getline(&buffer, &bufsize, stdin);
+        cmd_dispatch(buffer);
+    }
 
 //
     buffer = (char *) malloc(bufsize * sizeof(char));
