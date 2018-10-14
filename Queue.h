@@ -29,12 +29,18 @@ typedef struct Queue_Node {
     void (*add)(struct Queue_Node *, job_t *job);
 } queue_t;
 
+queue_t *init_queue(queue_t *head);
+
 int64_t currentTimeMillis();
 
 queue_t *remove_head(queue_t *self) {
     queue_t *head = self;
-    self = self->next;
-    self->count--;
+    if (self->next != NULL) {
+        self = self->next;
+        self->count--;
+    } else {
+        self = init_queue(self);
+    }
     return head;
 }
 
@@ -97,7 +103,7 @@ queue_t* sort(queue_t* jobs, int type) {
 //            /// sort by submission time-fcfs
         case 2:
             while(fast != NULL && slow != NULL) {
-                if(fast->job->sub_time <= slow->job->sub_time) {
+                if (fast->job->sub_time < slow->job->sub_time) {
                     tail->next = fast;
                     tail = fast;
                     fast = fast->next;
@@ -111,7 +117,7 @@ queue_t* sort(queue_t* jobs, int type) {
             /// sort by job time-sjf
         case 3:
             while(fast != NULL && slow != NULL) {
-                if(fast->job->run_time <= slow->job->run_time) {
+                if (fast->job->run_time < slow->job->run_time) {
                     tail->next = fast;
                     tail = fast;
                     fast = fast->next;
