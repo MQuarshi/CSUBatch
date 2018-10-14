@@ -28,7 +28,7 @@ pthread_cond_t emptyQ = PTHREAD_COND_INITIALIZER;
 pthread_cond_t emptyA = PTHREAD_COND_INITIALIZER;//Condition used to make scheduler thread wait if queue is empty
 pthread_cond_t emptyB = PTHREAD_COND_INITIALIZER;//Condtiion used to make dispatcher thread wait if queue is empty
 
-pthread_t tid;
+pthread_t tid, tid2;
 
 /* Error Code */
 #define EINVAL       1
@@ -275,6 +275,7 @@ int cmd_dispatch(char *cmd) {
 }
 
 void create_modules(void *module) {
+
     pthread_create(&tid, NULL, module, NULL);
 }
 
@@ -317,6 +318,7 @@ void dispatcherMod() {
             pthread_exit(NULL);
         }
 
+        printf("dispatch test");
         pthread_mutex_lock(&emptyB_mutex);
         //if job queue is empty, the thread will wait until
         while (job_queue->count == 0) {
@@ -417,41 +419,15 @@ int main() {
     job_queue = init_queue(job_queue);
     int bool = 1;
 
-    for(int i = 0; i < 5; ++i) {
-        job_t* job = malloc(sizeof(job_t));
-        job->run_time = i * i;
-        job->priority = i + 1;
-        strcpy(job->name, "job");
-        char num [3];
-        strcat(job->name, num);
-        if(i == 1) {
-            job_queue->job = job;
-            continue;
-        }
-        job_queue->add(job_queue, job);
-    }
-    job_queue = sort(job_queue, 1);
-    for (int j = 0; j < 5; ++j) {
-        queue_t* cpy = job_queue;
-        printf("%s   %d\n", job_queue->job->name, job_queue->job->priority);
-        job_queue = job_queue->next;
-    }
 
 
 //
-//    buffer = (char *) malloc(bufsize * sizeof(char));
-//    if (buffer == NULL) {
-//        perror("Unable to malloc buffer");
-//        exit(1);
-//    }
-//
-//    //create_modules(schedulerMod);
-//    //create_modules(dispatcherMod);
-//    while (1) {
-//        printf("> [? for menu]: ");
-//        getline(&buffer, &bufsize, stdin);
-//        cmd_dispatch(buffer);
-//    }
+    buffer = (char *) malloc(bufsize * sizeof(char));
+    if (buffer == NULL) {
+        perror("Unable to malloc buffer");
+        exit(1);
+    }
+
     create_modules(schedulerMod2);
     printf("test\n");
     //sleep(8);
