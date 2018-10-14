@@ -79,28 +79,17 @@ int cmd_run(int nargs, char **args) {
         job->sub_time = currentTimeMillis();
         job_queue->job = job;
         job_queue->count++;
+        //pthread_cond_signal(emptyA);
     } else {
         job_queue->add(job_queue, job);
     }
 
     if (job_queue->count == 1) {
         //pthread_cond_signal((pthread_cond_t *) queue_mutex);
+        pthread_cond_signal(&emptyA);
         pthread_cond_signal(&emptyB);
-        pthread_cond_signal(emptyA);
-    }
-    pid_t child = fork();
-    char *execv_args[] = {"C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe", NULL };
-    if(child == 0) {
-        if(execv("C:\\Users\\jazart\\CLionProjects\\CSUBatch\\job.exe",
-                execv_args) < 0) {
-            printf("\nError\n");
-            exit(0);
-        }
     }
 
-    if(child != 0) {
-        waitpid(-1, NULL, 0);
-    }
     printf("\nuse execv to run the job in csubatch.\n");
     return 1;
 }
@@ -108,9 +97,8 @@ int cmd_run(int nargs, char **args) {
 
 int cmd_sched(int nargs, char **args) {
     strcpy(sched, args[0]);
-    printf("%s\n", sched);
-    printf("%d\n", job_queue->count);
-//    create_modules(schedulerMod);
+    //printf("%s\n", sched);
+    //printf("%d\n", job_queue->count);
     reschedule = 1;
     return 1;
 }
@@ -279,35 +267,7 @@ void create_modules(void *module) {
 }
 
 //Scheduler thread that works, but doesn't run concurrently
-void schedulerMod() {
 
-    //pthread_mutex_lock(queue_mutex);
-    while (1) {while (job_queue->count == 0) {
-            pthread_cond_wait(&emptyQ, &queue_mutex);
-        }
-        if (strcmp(sched, "FCFS\n") == 0) {
-            sort(job_queue, 2);
-        }
-
-        if (strcmp(sched, "Priority\n") == 0) {
-            sort(job_queue, 1);
-        }
-
-        if (strcmp(sched, "SJF\n") == 0) {
-            printf("%s", sched);
-            sort(job_queue, 3);
-        }
-
-        pthread_cond_signal(&condB);
-        pthread_mutex_lock(&queue_mutex);
-        pthread_cond_wait(&condA, &queue_mutex);
-        pthread_cond_signal(&condB);
-        pthread_mutex_lock(&queue_mutex);
-        pthread_cond_wait(&condA, &queue_mutex);
-
-
-    }
-}
 
 void dispatcherMod() {
     while (1) {
@@ -317,7 +277,7 @@ void dispatcherMod() {
             pthread_exit(NULL);
         }
 
-        printf("dispatch test");
+
         pthread_mutex_lock(&emptyB_mutex);
         //if job queue is empty, the thread will wait until
         while (job_queue->count == 0) {
@@ -336,14 +296,28 @@ void dispatcherMod() {
         }
 
         pthread_mutex_unlock(&queue_mutex);
-        execv(remove_head(job_queue)->job->name, NULL);
-        sleep(15);
+
+        pid_t child = fork();
+        char *execv_args[] = {"C:\\Users\\kengh\\Desktop\\CSUBatch\\hello.exe", NULL};
+        if (child == 0) {
+            if (execv("C:\\Users\\kengh\\Desktop\\CSUBatch\\hello.exe",
+                      execv_args) < 0) {
+                printf("\nError\n");
+                exit(0);
+            }
+        }
+
+        if (child != 0) {
+            waitpid(-1, NULL, 0);
+        }
+        ///execv(remove_head(job_queue)->job->name, NULL);
+        sleep(25);
 
     }
 }
 
 //Version that will run concurrent
-void schedulerMod2() {
+void schedulerMod() {
 
     while (1) {
 
@@ -354,44 +328,36 @@ void schedulerMod2() {
 
         pthread_mutex_lock(&emptyA_mutex); //locks downn the mutex
         //if job queue is empty, the thread will wait until
-        while (job_queue->count == 0) {
 
+        while (job_queue->count == 0) {
+            printf("Sched test");
             pthread_cond_wait(&emptyA, &emptyA_mutex);  //releases mutex, and waits for signal
             if (quitBool == 1) {   //While waiting, should the quit command be entered, the thread will exit
                 pthread_exit(NULL);
             }
 
-            //pthread_mutex_unlock(&queue_mutex);
+
         }
 
         pthread_mutex_unlock(&emptyA_mutex);
 
-        pthread_mutex_lock(&reschedA_mutex);
-        while (reschedule == 0) {  // If the schedule command or a new job hasnt been added, the this thread will wait
-            pthread_cond_wait(&condA, &reschedA_mutex);
-            if (quitBool == 1) {
-                pthread_exit(NULL); // If quit command is enter while waiting, then it will exit
-            }
 
-        }
 
-        pthread_mutex_unlock(&reschedA_mutex);
-        //pthread_mutex_lock(&queue_mutex);
         pthread_mutex_lock(&queue_mutex);
         if (strcmp(sched, "FCFS\n") == 0) {
             job_queue = sort(job_queue, 2);
-            printf("Sorted");
+            printf("Sorted\n");
         }
 
         if (strcmp(sched, "Priority\n") == 0) {
             job_queue = sort(job_queue, 1);
-            printf("Sorted");
+            printf("Sorted\n");
         }
 
         if (strcmp(sched, "SJF\n") == 0) {
             printf("%s", sched);
             job_queue = sort(job_queue, 3);
-            printf("Sorted");
+            printf("Sorted\n");
         }
         pthread_mutex_unlock(&queue_mutex);
         pthread_cond_signal(&condB);
@@ -401,12 +367,6 @@ void schedulerMod2() {
 
     }
 }
-        //pthread_cond_signal(&condB);
-
-
-
-
-
 
 
 /*
@@ -424,8 +384,8 @@ int main() {
         exit(1);
     }
 
-    //create_modules(schedulerMod);
-    //create_modules(dispatcherMod);
+    create_modules(schedulerMod);
+    create_modules(dispatcherMod);
     while (1) {
         printf("> [? for menu]: ");
         getline(&buffer, &bufsize, stdin);
