@@ -54,6 +54,7 @@ char sched[15] = "FCFS";
 pid_t children_ids [20];
 int resched = 0;
 int idx = 0;
+int schedulerType = 1;
 /*
  * The run command - submit a job.
  */
@@ -79,6 +80,7 @@ int cmd_run(int nargs, char **args) {
         job_queue->add(job_queue, job);
     }
 
+    sort(job_queue, schedulerType);
     if (job_queue->count == 1) {
     }
 
@@ -126,6 +128,9 @@ static const char *helpmenu[] = {
         "[quit] Exit csubatch                 ",
         "[help] Print help menu              ",
         "[list] List all jobs               ",
+        "[SJF] Change Scheduling Policy to Shortest Job First               ",
+        "[FCFS] Change Scheduling Policy to First Come First Served              ",
+        "[Priority] Change Scheduling Policy to be based on Priority              ",
         NULL
 };
 
@@ -308,19 +313,21 @@ void *schedulerMod() {
         }
 
         if (strcmp(sched, "FCFS\n") == 0) {
+            schedulerType = 2;
             job_queue = sort(job_queue, 2);
-            printf("Sorted\n");
+            printf("Scheduling policy has been changed to %s. All jobs have been reordered according to it. \n", sched);
         }
 
         if (strcmp(sched, "Priority\n") == 0) {
+            schedulerType = 1;
             job_queue = sort(job_queue, 1);
-            printf("Sorted\n");
+            printf("Scheduling policy has been changed to %s. All jobs have been reordered according to it. \n", sched);
         }
 
         if (strcmp(sched, "SJF\n") == 0) {
-            printf("%s", sched);
+            schedulerType = 3;
             job_queue = sort(job_queue, 3);
-            printf("Sorted\n");
+            printf("Scheduling policy has been changed to %s. All jobs have been reordered according to it. \n", sched);
         }
         queue_t *cpy = job_queue;
         resched = 0;
