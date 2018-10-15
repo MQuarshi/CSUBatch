@@ -51,7 +51,9 @@ int cmd_helpmenu(int n, char **a);
 int cmd_dispatch(char *cmd);
 
 char sched[15] = "FCFS";
+pid_t children_ids [20];
 int resched = 0;
+int idx = 0;
 /*
  * The run command - submit a job.
  */
@@ -213,7 +215,11 @@ void dis_perfo() {
  */
 int cmd_quit(int nargs, char **args) {
     dis_perfo();
-    printf("Please display performance information before exiting csubatch!\n");
+    pthread_cancel(command_thread);
+    pthread_cancel(dispatch_thread);
+    for (int i = 0; i < 20; ++i) {
+        kill(children_ids[i], SIGKILL);
+    }
     exit(0);
 }
 
@@ -284,7 +290,7 @@ void *dispatcherMod() {
         }
         job_queue->remove_head(job_queue);
     }
-
+    children_ids[idx++] = child;
     if (child != 0) {
         waitpid(-1, NULL, 0);
     }
