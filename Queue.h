@@ -17,7 +17,7 @@ typedef struct Job {
     int priority;
 
     int64_t sub_time; //arrival
-    timer_t run_time;//burst time
+    int run_time;//burst time
 
 } job_t;
 
